@@ -1,9 +1,8 @@
 import {
-  AUTH_LOGOUT,
-  AUTH_REQUEST,
-  AUTH_REQUEST_ERROR,
-  AUTH_REQUEST_SUCCESS,
-} from './authAction';
+  USER_REQUEST,
+  USER_REQUEST_SUCCESS,
+  USER_REQUEST_ERROR,
+} from './userDataAction';
 
 const initialState = {
   loading: false,
@@ -11,31 +10,26 @@ const initialState = {
   error: '',
 };
 
-export const authReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case AUTH_REQUEST:
+    case USER_REQUEST:
       return {
         ...state,
         loading: true,
         error: '',
       };
-    case AUTH_REQUEST_SUCCESS:
+    case USER_REQUEST_SUCCESS:
       return {
         ...state,
         loading: false,
         data: action.data,
         error: '',
       };
-    case AUTH_REQUEST_ERROR:
+    case USER_REQUEST_ERROR:
       return {
         ...state,
         loading: false,
         error: action.error,
-      };
-    case AUTH_LOGOUT:
-      return {
-        ...state,
-        data: {},
       };
 
     default:

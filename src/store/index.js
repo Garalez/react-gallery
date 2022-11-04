@@ -1,14 +1,16 @@
 import {configureStore} from '@reduxjs/toolkit';
-import {tokenMiddleware, tokenReducer} from './tokenReducer';
-import {authReducer} from './auth/authReducer';
+import {codeMiddleware, codeReducer} from './codeReducer';
 import {imagesReducer} from './images/imagesReducer';
+import {userReducer} from './userData/userDataReducer';
+import {tokenReducer} from './token/tokenReducer';
 
 export const store = configureStore({
   reducer: {
-    token: tokenReducer,
-    auth: authReducer,
+    code: codeReducer,
     images: imagesReducer,
+    user: userReducer,
+    token: tokenReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(tokenMiddleware),
+    getDefaultMiddleware().concat(codeMiddleware),
 });

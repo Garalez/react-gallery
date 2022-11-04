@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import {URL_API, ACCESS_KEY} from '../../api/const';
 import axios from 'axios';
 
@@ -19,22 +20,44 @@ export const imagesRequestError = (error) => ({
   error,
 });
 
-export const imagesRequestAsync = () => (dispatch, getState) => {
+export const imagesRequestAsync = (id) => (dispatch, getState) => {
   const token = getState().token.token;
-  console.log('token: ', token);
+  const images = getState().images.images;
+  const status = getState().images.status;
+  let page = getState().images.page;
+  let userAuth;
 
-  if (!token) return;
+  if (isNaN(+page)) {
+    page = 0;
+  }
+
+  if (status === 'loading' || status === 'error') return;
+
+  token !== '' ?
+  (userAuth = `Bearer ${token}`) :
+  (userAuth = `Client-ID ${ACCESS_KEY}`);
+
   dispatch(imagesRequest());
-  console.log(URL_API);
 
-  axios(`${URL_API}photos?per_page=30`, {
+  axios(`${URL_API}/photos${id ? `/${id}` : `?per_page=30&page=${+page + 1}`}`, {
     headers: {
-      Authorization: `Client-ID ${ACCESS_KEY}`,
+      Authorization: userAuth,
     },
   })
-    .then(({data}) => {
-      console.log('data: ', data);
-      dispatch(imagesRequestSuccess(data));
+    .then((data) => {
+      const getPage = data.config.url;
+      const newPage = getPage.replace(/^\S+=/g, '');
+      if (!id) {
+        if (Array.isArray(images)) {
+          dispatch(
+            imagesRequestSuccess({images: [...images, ...data.data], page: newPage})
+          );
+        } else {
+          dispatch(imagesRequestSuccess({images: data.data, page: newPage}));
+        }
+      } else {
+        dispatch(imagesRequestSuccess({images: data.data, page: newPage}));
+      }
     })
     .catch((err) => {
       dispatch(imagesRequestError(err.message));

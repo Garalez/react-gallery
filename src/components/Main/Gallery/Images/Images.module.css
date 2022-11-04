@@ -1,0 +1,23 @@
+.wrapper {
+  position: relative;
+}
+
+.likes {
+  width: 41px;
+  height: 41px;
+  position: absolute;
+  left: 10%;
+  bottom: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-image: url("./svg/heart-svgrepo-com.svg");
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+}
+
+.href {
+  cursor: pointer;
+}
