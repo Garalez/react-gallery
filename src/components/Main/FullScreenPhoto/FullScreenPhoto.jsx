@@ -60,7 +60,6 @@ export const FullScreenPhoto = () => {
             <button
               className={!like ? style.likeBtn : style.dislikeBtn}
               onClick={() => handleRating()}
-              disabled={true}
             /> : <p>Авторизуйтесь чтобы ставить лайки</p>}
             <p className={style.likes}>{likeCount}</p>
           </div>
