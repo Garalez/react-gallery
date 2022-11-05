@@ -8,9 +8,10 @@ import style from './FullScreenPhoto.module.css';
 export const FullScreenPhoto = () => {
   const dispatch = useDispatch();
   const image = useSelector((state) => state.images.images);
+  const like = useSelector((state) => state.images.like);
   const token = useSelector((state) => state.token.token);
-  const [like, setLike] = useState(image.liked_by_user);
   const [likeCount, setLikeCount] = useState(0);
+  const [likeState, setLikeState] = useState(null);
   const {id} = useParams();
 
   useEffect(() => {
@@ -19,6 +20,7 @@ export const FullScreenPhoto = () => {
 
   useEffect(() => {
     setLikeCount(image.likes);
+    setLikeState(like);
   }, [image]);
 
   const formatDate = (date) => {
@@ -33,11 +35,11 @@ export const FullScreenPhoto = () => {
   };
 
   const handleRating = () => {
-    setLike(!like);
+    setLikeState(!likeState);
     if (like) {
-      setLikeCount((state) => (state -= 1));
+      setLikeCount(state => state - 1);
     } else {
-      setLikeCount((state) => (state += 1));
+      setLikeCount(state => state + 1);
     }
     ratingRequest(id, like, token);
   };
@@ -58,7 +60,7 @@ export const FullScreenPhoto = () => {
           <div className={style.likesWrapper}>
             {token !== '' ?
             <button
-              className={!like ? style.likeBtn : style.dislikeBtn}
+              className={!likeState ? style.likeBtn : style.dislikeBtn}
               onClick={() => handleRating()}
             /> : <p>Авторизуйтесь чтобы ставить лайки</p>}
             <p className={style.likes}>{likeCount}</p>
