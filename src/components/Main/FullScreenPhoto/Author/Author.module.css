@@ -1,0 +1,10 @@
+.href {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: blue;
+}
+
+.href:hover {
+  text-decoration: underline;
+}
